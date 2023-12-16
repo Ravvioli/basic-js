@@ -1,4 +1,4 @@
-const { NotImplementedError } = require('../extensions/index.js');
+const { NotImplementedError } = require("../extensions/index.js");
 
 /**
  * In the popular Minesweeper game you have a board with some mines and those cells
@@ -23,11 +23,37 @@ const { NotImplementedError } = require('../extensions/index.js');
  *  [1, 1, 1]
  * ]
  */
-function minesweeper(/* matrix */) {
-  throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
+function minesweeper(matrix) {
+  const rows = matrix.length;
+  const cols = matrix[0].length;
+
+  // Initialize the result matrix with zeros
+  const result = Array.from({ length: rows }, () => Array(cols).fill(0));
+
+  // Helper function to check if a cell is valid and contains a mine
+  const hasMine = (i, j) =>
+    i >= 0 && i < rows && j >= 0 && j < cols && matrix[i][j];
+
+  // Iterate through each cell in the matrix
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+      // Check the eight neighboring cells for mines
+      for (let x = -1; x <= 1; x++) {
+        for (let y = -1; y <= 1; y++) {
+          if (x !== 0 || y !== 0) {
+            // If the neighboring cell has a mine, increment the count
+            if (hasMine(i + x, j + y)) {
+              result[i][j]++;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return result;
 }
 
 module.exports = {
-  minesweeper
+  minesweeper,
 };
